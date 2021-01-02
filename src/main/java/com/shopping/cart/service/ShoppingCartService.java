@@ -31,7 +31,6 @@ public class ShoppingCartService {
 		Scanner sc = new Scanner(System.in);
 		String products = sc.nextLine();
 		ShoppingCartResponse shoppingCartResponse=new ShoppingCartService().processAndValidateProducts(products);
-		
 		if(shoppingCartResponse!=null) {
 			log.info(ShoppingConstants.SUB_TOTAL + shoppingCartResponse.getSubTotal());
 			log.info(ShoppingConstants.TAX + shoppingCartResponse.getTax());
@@ -79,7 +78,7 @@ public class ShoppingCartService {
 	
     /**Core Logic to calculate Detailed Total Bill*/
 	private ShoppingCartResponse calculateDetailedTotalBill(Map<String, Integer> map) {
-		ShoppingCartResponse cartResponse=new ShoppingCartResponse();
+		ShoppingCartResponse cartResponse=null;
 		Map<String,Integer> discounts=new LinkedHashMap<>();
 		List<Integer> finalPrice = new ArrayList<>();
 		Integer subTotal = 0;
@@ -126,6 +125,7 @@ public class ShoppingCartService {
 		tax = (subTotal * 18) / 100;
 
 		if (!eligibleOffers.isEmpty()) {
+			cartResponse=new ShoppingCartResponse();
 			Integer shoes_Offer = eligibleOffers.get(ShoppingConstants.SHOES_OFFER) != null ? eligibleOffers.get(ShoppingConstants.SHOES_OFFER) : 0;
 			Integer jacket_Offer = eligibleOffers.get(ShoppingConstants.JACKET_OFFER) != null ? eligibleOffers.get(ShoppingConstants.JACKET_OFFER) : 0;
 			
@@ -144,6 +144,7 @@ public class ShoppingCartService {
 			total = subTotal + tax;
 			cartResponse.setTotal(String.valueOf(total));
 		} else {
+			cartResponse=new ShoppingCartResponse();
 			cartResponse.setSubTotal(String.valueOf(subTotal));
 			cartResponse.setTax(String.valueOf(tax));
 			total = subTotal + tax;
